@@ -10,8 +10,7 @@ CREATE TABLE player
     birthday   datetime              NOT NULL,
     level      int                   NOT NULL,
     banned     TINYINT(1)            NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;;
+);
 
 INSERT INTO rpg.player (id, name, title, race, profession, birthday, level, banned)
 VALUES (1,  'Ниус',      'Приходящий Без Шума',     6, 1, '2009-06-09 00:44:40.000000', 33, 0),
