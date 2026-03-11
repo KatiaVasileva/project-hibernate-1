@@ -95,6 +95,8 @@ public class PlayerRepositoryDB implements IPlayerRepository {
             transaction.rollback();
             System.out.println("Error when updating player with id = : " + player.getId() + ": " + e.getMessage());
             throw new RuntimeException();
+        } finally {
+            session.close();
         }
     }
 
@@ -120,6 +122,8 @@ public class PlayerRepositoryDB implements IPlayerRepository {
         } catch (Exception e) {
             transaction.rollback();
             System.out.println("Error when deleting player with id = : " + player.getId() + ": " + e.getMessage());
+        } finally {
+            session.close();
         }
     }
 
