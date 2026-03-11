@@ -38,15 +38,10 @@ public class PlayerRepositoryDB implements IPlayerRepository {
     @Override
     public List<Player> getAll(int pageNumber, int pageSize) {
         try (Session session = sessionFactory.openSession()) {
-            int offset = pageNumber * pageSize;
-
             Query<Player> query = session.createNativeQuery(
-                    "SELECT * FROM rpg.player LIMIT :pageSize OFFSET :offset",
-                    Player.class);
-
-            query.setParameter("pageSize", pageSize);
-            query.setParameter("offset", offset);
-
+                    "SELECT * FROM rpg.player", Player.class);
+            query.setFirstResult(pageNumber * pageSize);
+            query.setMaxResults(pageSize);
             return query.getResultList();
         } catch (Exception e) {
             System.err.println("Error when getting al players: " + e.getMessage());
@@ -103,9 +98,8 @@ public class PlayerRepositoryDB implements IPlayerRepository {
     @Override
     public Optional<Player> findById(long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Player> query = session.createQuery("SELECT p FROM Player p WHERE id = :id", Player.class);
-            query.setParameter("id", id);
-            return Optional.ofNullable(query.getSingleResult());
+            Player player = session.find(Player.class, id);
+            return Optional.ofNullable(player);
         } catch (Exception e) {
             System.err.println("Error when finding player with id : " + id + ": " + e.getMessage());
             throw new RuntimeException(e);
